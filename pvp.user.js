@@ -3,7 +3,7 @@
 // @namespace   moe.suisei.pvp.youtube
 // @match       https://www.youtube.com/watch*
 // @grant       none
-// @version     0.4
+// @version     0.4.1
 // @author      Outvi V <oss@outv.im>
 // @description 4/12/2020, 8:13:19 PM
 // ==/UserScript==
@@ -42,6 +42,7 @@ function generateControl() {
     currentTime,
     btn,
     btnStop,
+    btnExport
   };
 }
 
