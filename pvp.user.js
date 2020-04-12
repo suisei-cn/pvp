@@ -3,7 +3,7 @@
 // @namespace   moe.suisei.pvp.youtube
 // @match       https://www.youtube.com/watch*
 // @grant       none
-// @version     0.4.3
+// @version     0.4.4
 // @author      Outvi V <oss@outv.im>
 // @description 4/12/2020, 8:13:19 PM
 // ==/UserScript==
@@ -100,7 +100,7 @@ async function main() {
     evt.preventDefault();
     let toValue = Number(control.inputTo.value).toFixed(2);
     let fromValue = Number(control.inputFrom.value).toFixed(2);
-    let duration = Number(toValue - fromValue);
+    let duration = Number(toValue - fromValue).toFixed(2);
     let videoId = getVideoId(window.location);
     alert(`ffmpeg -i $(youtube-dl -f bestaudio -g "https://www.youtube.com/watch?v=${videoId}") \
 -ss ${fromValue} \
@@ -108,7 +108,7 @@ async function main() {
 -acodec libmp3lame \
 -ab 192k \
 -af loudnorm=I=-16:TP=-2:LRA=11 \
-output-${videoId}-${fromValue}.mp3`)
+output-${videoId}-${fromValue}-${toValue}.mp3`)
   });
 }
 
