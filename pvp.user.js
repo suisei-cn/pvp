@@ -3,7 +3,7 @@
 // @namespace   moe.suisei.pvp.youtube
 // @match       https://www.youtube.com/watch*
 // @grant       none
-// @version     0.3
+// @version     0.4
 // @author      Outvi V <oss@outv.im>
 // @description 4/12/2020, 8:13:19 PM
 // ==/UserScript==
@@ -11,6 +11,10 @@
 "use strict";
 
 console.log("Precise Video Playback is up");
+
+function getVideoId(url) {
+  return String(url).match(/v=([^&]+)/)[1];
+}
 
 function generateControl() {
   let app = document.createElement("div");
@@ -21,13 +25,16 @@ function generateControl() {
   let currentTime = document.createElement("span");
   let btn = document.createElement("button");
   let btnStop = document.createElement("button");
+  let btnExport = document.createElement("button");
   btn.innerText = "Repeat play";
   btnStop.innerText = "Stop";
+  btnExport.innerText = "Export";
   app.appendChild(inputFrom);
   app.appendChild(inputTo);
   app.appendChild(currentTime);
   app.appendChild(btn);
   app.appendChild(btnStop);
+  app.appendChild(btnExport);
   return {
     app,
     inputFrom,
@@ -87,6 +94,17 @@ async function main() {
     evt.preventDefault();
     videoElement.removeEventListener("timeupdate", onTimeUpdate);
     videoElement.pause();
+  });
+  control.btnExport.addEventListener("click", (evt) => {
+    evt.preventDefault();
+    let videoId = getVideoId(window.location);
+    alert(`ffmpeg -i $(youtube-dl -f bestaudio -g "https://www.youtube.com/watch?v=${videoId}") \
+-ss ${control.inputFrom.value} \
+-t ${Number(control.inputTo.value) - Number(control.inputFron.value)} \
+-acodec libmp3lame \
+-ab 192k \
+-af loudnorm=I=-16:TP=-2:LRA=11 \
+output-${videoId}.mp3`)
   });
 }
 
