@@ -1,5 +1,8 @@
 // ==UserScript==
 // @name        Precise video playback (YouTube)
+// @name:zh-CN  精确控制视频播放进度 (YouTube)
+// @description A toolbar to set precise video play time and generate clip script
+// @description:zh-CN 精确控制视频播放进度/生成剪辑脚本的工具栏
 // @namespace   moe.suisei.pvp.youtube
 // @match       https://www.youtube.com/watch*
 // @grant       none
