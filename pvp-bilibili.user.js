@@ -13,7 +13,7 @@
 console.log("Precise Video Playback is up");
 
 function getVideoId(url) {
-  return String(url).match(/(a|b)v([^?&]+)/i)[0];
+  return String(url).match(/(a|b)v([^?&#]+)/i)[0];
 }
 
 function applyStyle(elem, styles) {
