@@ -32,8 +32,6 @@ function parseTime(str) {
   return ret;
 }
 
-parseTime("0:4.2");
-
 function generateControl() {
   let app = document.createElement("div");
   let inputFrom = document.createElement("input");
