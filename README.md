@@ -3,7 +3,8 @@
 ![example](example.png)
 
 <p align="center">
-  This userscript shows up a toolbar at the bottom of video to give users better control.
+  This userscript shows up a toolbar at the bottom of video to give users better control. Video from <a href="https://www.youtube.com/watch?v=l2UDgpLz20M">here</a>. <br>
+  Android is a trademark of Google.
 </p>
 
 ---
