@@ -144,6 +144,9 @@ async function main() {
   });
 
   // Start/end time setting
+  function updateURL() {
+    history.pushState(null, null, `#pvp${fromValue}-${toValue}`);
+  }
   control.inputFrom.addEventListener("change", () => {
     let input = control.inputFrom.value;
     if (input === "") {
@@ -158,6 +161,7 @@ async function main() {
     }
     control.btn.disabled = false;
     fromValue = time;
+    updateURL();
   });
   control.inputTo.addEventListener("change", () => {
     let input = control.inputTo.value;
@@ -173,6 +177,7 @@ async function main() {
     }
     control.btn.disabled = false;
     toValue = time;
+    updateURL();
   });
 
   // Button export
