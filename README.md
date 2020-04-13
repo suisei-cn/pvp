@@ -9,9 +9,9 @@
 
 ---
 
-Precise video playback on YouTube. We also generate the clip shell script (audio only by default), and you can easily get the clip running this on a machine with `youtube-dl` and `ffmpeg`. Useful for video meme creators.
+Precise video playback on YouTube/Bilibili. We also generate the clip shell script (audio only by default), and you can easily get the clip running this on a machine with `youtube-dl` (for YouTube) or `yk-dl` (for Bilibili) as well as `ffmpeg`. Useful for video meme creators.
 
-To use this, you need to install [ViolentMonkey](https://github.com/suisei-cn/pvp-youtube/raw/master/pvp.user.js) or [GreaseMonkey](https://www.greasespot.net/) first, then click [here](https://github.com/suisei-cn/pvp-youtube/raw/master/pvp.user.js) to install the user script.
+To use this, you need to install [ViolentMonkey](https://github.com/suisei-cn/pvp-youtube/raw/master/pvp.user.js) or [GreaseMonkey](https://www.greasespot.net/) first, then click [here](https://github.com/suisei-cn/pvp-youtube/raw/master/pvp.user.js) to install the script for YouTube, or click [here](https://github.com/suisei-cn/pvp-youtube/raw/master/pvp-bilibili.user.js) to install the script for Bilibili (beta).
 
 [Also available at GreasyFork](https://greasyfork.org/en/scripts/400569-precise-video-playback-youtube).
 
