@@ -107,10 +107,8 @@ async function main() {
   let control = generateControl();
   let shadowParent = document.createElement("div");
   let shadow = shadowParent.attachShadow({ mode: "open" });
-  console.log(player);
   player.appendChild(shadowParent);
   shadow.appendChild(control.app);
-  console.log(control.app);
 
   // States
   let fromValue = 0,
