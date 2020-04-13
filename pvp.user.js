@@ -3,7 +3,7 @@
 // @namespace   moe.suisei.pvp.youtube
 // @match       https://www.youtube.com/watch*
 // @grant       none
-// @version     0.4.6
+// @version     0.5.0
 // @author      Outvi V
 // ==/UserScript==
 
@@ -112,6 +112,16 @@ async function main() {
   // States
   let fromValue = 0,
     toValue = 0;
+
+  // Initial state update attempt
+  let urlTime = window.location.hash.match(
+    /#pvp([0-9]+\.?[0-9]?)-([0-9]+\.?[0-9]?)/
+  );
+  if (urlTime !== null) {
+    console.log("Attempting to recover time from URL...");
+    control.inputFrom.value = fromValue = Number(urlTime[1]) || 0;
+    control.inputTo.value = toValue = Number(urlTime[2]) || 0;
+  }
 
   // Current playback time
   function updateCurrentTime() {
