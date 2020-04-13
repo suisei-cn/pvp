@@ -3,7 +3,7 @@
 // @namespace   moe.suisei.pvp.youtube
 // @match       https://www.youtube.com/watch*
 // @grant       none
-// @version     0.5.0
+// @version     0.5.1
 // @author      Outvi V
 // ==/UserScript==
 
@@ -12,7 +12,7 @@
 console.log("Precise Video Playback is up");
 
 function getVideoId(url) {
-  return String(url).match(/v=([^&]+)/)[1];
+  return String(url).match(/v=([^&#]+)/)[1];
 }
 
 function applyStyle(elem, styles) {
