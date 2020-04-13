@@ -3,9 +3,8 @@
 // @namespace   moe.suisei.pvp.youtube
 // @match       https://www.youtube.com/watch*
 // @grant       none
-// @version     0.4.5
-// @author      Outvi V <oss@outv.im>
-// @description 4/12/2020, 8:13:19 PM
+// @version     0.4.6
+// @author      Outvi V
 // ==/UserScript==
 
 "use strict";
@@ -15,6 +14,24 @@ console.log("Precise Video Playback is up");
 function getVideoId(url) {
   return String(url).match(/v=([^&]+)/)[1];
 }
+
+function applyStyle(elem, styles) {
+  for (const [key, value] of Object.entries(styles)) {
+    elem.style[key] = value;
+  }
+}
+
+function parseTime(str) {
+  if (!isNaN(Number(str))) return Number(str);
+  let time = str.match(/([0-9]?)?:([0-9]+)(\.([0-9]+))?/);
+  if (time === null) return -1;
+  let ret =
+    Number(time[1] || 0) * 60 + Number(time[2]) + Number(time[4] || 0) * 0.1;
+  if (ret == NaN) return -1;
+  return ret;
+}
+
+parseTime("0:4.2");
 
 function generateControl() {
   let app = document.createElement("div");
@@ -26,6 +43,23 @@ function generateControl() {
   let btn = document.createElement("button");
   let btnStop = document.createElement("button");
   let btnExport = document.createElement("button");
+  applyStyle(app, {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    maxWidth: "700px",
+    marginTop: "15px",
+    marginLeft: "auto",
+    marginRight: "auto",
+  });
+  applyStyle(currentTime, {
+    fontSize: "1.3rem",
+  });
+  let inputCommonStyle = {
+    width: "120px",
+  };
+  applyStyle(inputFrom, inputCommonStyle);
+  applyStyle(inputTo, inputCommonStyle);
   btn.innerText = "Repeat play";
   btnStop.innerText = "Stop";
   btnExport.innerText = "Export";
@@ -42,7 +76,7 @@ function generateControl() {
     currentTime,
     btn,
     btnStop,
-    btnExport
+    btnExport,
   };
 }
 
@@ -55,6 +89,7 @@ async function sleep(time) {
 }
 
 async function main() {
+  // Player fetching
   console.log("Waiting for the player...");
   let player;
   while (true) {
@@ -63,32 +98,43 @@ async function main() {
     await sleep(500);
   }
   let videoElement = document.querySelector("video");
-
   if (!videoElement || !player) {
     console.warn("Player not found. Exiting.");
     return;
   }
   console.log("Player detected.");
+
+  // Layout
   let control = generateControl();
   console.log(player);
   player.appendChild(control.app);
+
+  // States
+  let fromValue = 0,
+    toValue = 0;
+
+  // Current playback time
   function updateCurrentTime() {
     control.currentTime.innerText = Number(videoElement.currentTime).toFixed(2);
     requestAnimationFrame(updateCurrentTime);
   }
+  requestAnimationFrame(updateCurrentTime);
+
+  // Repeat playback
   function onTimeUpdate() {
-    if (videoElement.currentTime >= Number(control.inputTo.value)) {
-      videoElement.currentTime = Number(control.inputFrom.value);
+    if (videoElement.currentTime >= Number(toValue)) {
+      videoElement.currentTime = Number(fromValue);
     }
   }
-  requestAnimationFrame(updateCurrentTime);
   control.btn.addEventListener("click", (evt) => {
     evt.preventDefault();
-    if (control.inputFrom.value && control.inputTo.value) {
-      videoElement.pause();
-      videoElement.currentTime = Number(control.inputFrom.value);
+    videoElement.pause();
+    videoElement.currentTime = fromValue;
+    if (fromValue < toValue) {
       videoElement.play();
       videoElement.addEventListener("timeupdate", onTimeUpdate);
+    } else {
+      videoElement.removeEventListener("timeupdate", onTimeUpdate);
     }
   });
   control.btnStop.addEventListener("click", (evt) => {
@@ -96,18 +142,50 @@ async function main() {
     videoElement.removeEventListener("timeupdate", onTimeUpdate);
     videoElement.pause();
   });
+
+  // Start/end time setting
+  control.inputFrom.addEventListener("change", () => {
+    let input = control.inputFrom.value;
+    if (input === "") {
+      fromValue = 0;
+      control.inputFrom.placeholder = "from 0";
+      return;
+    }
+    let time = parseTime(input);
+    if (time == -1) {
+      control.btn.disabled = true;
+      return;
+    }
+    control.btn.disabled = false;
+    fromValue = time;
+  });
+  control.inputTo.addEventListener("change", () => {
+    let input = control.inputTo.value;
+    if (input === "") {
+      toValue = videoElement.duration || 0;
+      control.inputTo.placeholder = `to ${toValue.toFixed(2)}`;
+      return;
+    }
+    let time = parseTime(input);
+    if (time == -1) {
+      control.btn.disabled = true;
+      return;
+    }
+    control.btn.disabled = false;
+    toValue = time;
+  });
+
+  // Button export
   control.btnExport.addEventListener("click", (evt) => {
     evt.preventDefault();
     let videoId = getVideoId(window.location);
-    let fromValue = control.inputFrom.value;
-    let toValue = control.inputTo.value;
     alert(`ffmpeg -i $(youtube-dl -f bestaudio -g "https://www.youtube.com/watch?v=${videoId}") \
 -ss ${fromValue} \
 -to ${toValue} \
 -acodec libmp3lame \
 -ab 192k \
 -af loudnorm=I=-16:TP=-2:LRA=11 \
-output-${videoId}-${fromValue}-${toValue}.mp3`)
+output-${videoId}-${fromValue}-${toValue}.mp3`);
   });
 }
 
