@@ -1,4 +1,4 @@
-# pvp-youtube
+# precise-video-playback
 
 ![example](example.png)
 
