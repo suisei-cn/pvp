@@ -4,7 +4,7 @@
 // @match       https://bilibili.com/video/*
 // @match       https://www.bilibili.com/video/*
 // @grant       none
-// @version     0.5.0
+// @version     0.5.1
 // @author      Outvi V
 // ==/UserScript==
 
@@ -195,7 +195,7 @@ async function main() {
   control.btnExport.addEventListener("click", (evt) => {
     evt.preventDefault();
     let videoId = getVideoId(window.location);
-    alert(`ykdl https://www.bilibili.com/video/av93439317 -O output-${videoId} &&
+    alert(`ykdl https://www.bilibili.com/video/${videoId} -O output-${videoId} &&
     ffmpeg -i output-${videoId}.flv \
 -ss ${fromValue} \
 -to ${toValue} \
