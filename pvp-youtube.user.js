@@ -6,7 +6,7 @@
 // @namespace   moe.suisei.pvp.youtube
 // @match       https://www.youtube.com/watch*
 // @grant       none
-// @version     0.5.2
+// @version     0.5.3
 // @author      Outvi V
 // ==/UserScript==
 
@@ -202,6 +202,7 @@ async function main() {
 -acodec libmp3lame \
 -ab 192k \
 -af loudnorm=I=-16:TP=-2:LRA=11 \
+-vn \
 output-${videoId}-${fromValue}-${toValue}.mp3`);
   });
 }
