@@ -4,7 +4,7 @@
 // @match       https://bilibili.com/video/*
 // @match       https://www.bilibili.com/video/*
 // @grant       none
-// @version     0.5.1
+// @version     0.5.2
 // @author      Outvi V
 // ==/UserScript==
 
@@ -202,6 +202,7 @@ async function main() {
 -acodec libmp3lame \
 -ab 192k \
 -af loudnorm=I=-16:TP=-2:LRA=11 \
+-vn \
 output-${videoId}-${fromValue}-${toValue}.mp3 && rm output-${videoId}.flv`);
   });
 }
