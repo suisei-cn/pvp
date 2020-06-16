@@ -4,7 +4,7 @@
 // @match       https://bilibili.com/video/*
 // @match       https://www.bilibili.com/video/*
 // @grant       none
-// @version     0.5.2
+// @version     0.5.3
 // @author      Outvi V
 // ==/UserScript==
 
@@ -52,7 +52,9 @@ function generateControl() {
     marginRight: "auto",
   });
   applyStyle(currentTime, {
-    fontSize: "1.3rem",
+    fontSize: "1.2rem",
+    minWidth: "7.5rem",
+    textAlign: "center"
   });
   let inputCommonStyle = {
     width: "80px",
