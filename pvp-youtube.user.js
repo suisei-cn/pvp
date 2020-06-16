@@ -6,7 +6,7 @@
 // @namespace   moe.suisei.pvp.youtube
 // @match       https://www.youtube.com/watch*
 // @grant       none
-// @version     0.5.3
+// @version     0.5.4
 // @author      Outvi V
 // ==/UserScript==
 
@@ -55,6 +55,8 @@ function generateControl() {
   });
   applyStyle(currentTime, {
     fontSize: "1.3rem",
+    minWidth: "8.1rem",
+    textAlign: "center",
     color: "var(--yt-spec-text-primary)",
   });
   let inputCommonStyle = {
