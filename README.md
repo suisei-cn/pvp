@@ -13,7 +13,7 @@ Precise video playback on YouTube/Bilibili. We also generate the clip shell scri
 
 To use this, you need to install [ViolentMonkey](https://violentmonkey.github.io/) or [GreaseMonkey](https://www.greasespot.net/) first, then click [here](https://github.com/suisei-cn/pvp/raw/master/pvp-youtube.user.js) to install the script for YouTube, or click [here](https://github.com/suisei-cn/pvp/raw/master/pvp-bilibili.user.js) to install the script for Bilibili (beta).
 
-[Also available at GreasyFork](https://greasyfork.org/en/scripts/400569-precise-video-playback-youtube).
+Also available at GreasyFork: [YouTube](https://greasyfork.org/en/scripts/400569-precise-video-playback-youtube) or [Bilibili(https://greasyfork.org/zh-CN/scripts/406195-precise-video-playback-bilibili).
 
 **Note that this project is not meant to do any harm to anyone who has been in a YouTube video. You shall take the responsibility if your audio or video clip annoys anyone.**
 
