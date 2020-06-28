@@ -4,7 +4,7 @@
 // @match       https://bilibili.com/video/*
 // @match       https://www.bilibili.com/video/*
 // @grant       none
-// @version     0.5.3
+// @version     0.5.4
 // @author      Outvi V
 // ==/UserScript==
 
@@ -90,16 +90,25 @@ async function sleep(time) {
 }
 
 async function main() {
+  console.log("Waiting for the page...");
+  // Wait for Bilibili to fully render the page
+  // Or error could occur after inserting our widget
+  while (true) {
+    let text = document.querySelector("#arc_toolbar_report .like")?.innerText || "--";
+    if (text !== "--") break;
+    await sleep(500);
+  }
+
   // Player fetching
   console.log("Waiting for the player...");
-  let player;
+  let anchor;
   while (true) {
-    player = document.querySelector(".bilibili-player-video-bottom-area");
-    if (player && !player.hidden) break;
+    anchor = document.querySelector("#v_desc");
+    if (anchor && !anchor.hidden) break;
     await sleep(500);
   }
   let videoElement = document.querySelector("video");
-  if (!videoElement || !player) {
+  if (!videoElement || !anchor) {
     console.warn("Player not found. Exiting.");
     return;
   }
@@ -109,7 +118,7 @@ async function main() {
   let control = generateControl();
   let shadowParent = document.createElement("div");
   let shadow = shadowParent.attachShadow({ mode: "open" });
-  player.appendChild(shadowParent);
+  anchor.parentElement.insertBefore(shadowParent, anchor);
   shadow.appendChild(control.app);
 
   // States
