@@ -1,10 +1,13 @@
 // ==UserScript==
 // @name        Precise video playback (Bilibili)
+// @name:zh-CN  精确控制视频播放进度 (Bilibili)
+// @description A toolbar to set precise video play time and generate clip script
+// @description:zh-CN 精确控制视频播放进度/生成剪辑脚本的工具栏
 // @namespace   moe.suisei.pvp.bilibili
 // @match       https://bilibili.com/video/*
 // @match       https://www.bilibili.com/video/*
 // @grant       none
-// @version     0.5.4
+// @version     0.5.5
 // @author      Outvi V
 // ==/UserScript==
 
