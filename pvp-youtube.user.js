@@ -6,7 +6,7 @@
 // @namespace   moe.suisei.pvp.youtube
 // @match       https://www.youtube.com/watch*
 // @grant       none
-// @version     0.5.4
+// @version     0.5.5
 // @author      Outvi V
 // ==/UserScript==
 
@@ -95,14 +95,14 @@ async function sleep(time) {
 async function main() {
   // Player fetching
   console.log("Waiting for the player...");
-  let player;
+  let anchor;
   while (true) {
-    player = document.querySelector("ytd-app #player");
-    if (player && !player.hidden) break;
+    anchor = document.querySelector("ytd-video-primary-info-renderer");
+    if (anchor && !anchor.hidden) break;
     await sleep(500);
   }
   let videoElement = document.querySelector("video");
-  if (!videoElement || !player) {
+  if (!videoElement || !anchor) {
     console.warn("Player not found. Exiting.");
     return;
   }
@@ -110,8 +110,8 @@ async function main() {
 
   // Layout
   let control = generateControl();
-  console.log(player);
-  player.appendChild(control.app);
+  console.log(anchor);
+  anchor.parentElement.insertBefore(control.app, anchor);
 
   // States
   let fromValue = 0,
