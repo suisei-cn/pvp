@@ -7,7 +7,7 @@
 // @match       https://bilibili.com/video/*
 // @match       https://www.bilibili.com/video/*
 // @grant       none
-// @version     0.5.5
+// @version     0.5.6
 // @author      Outvi V
 // ==/UserScript==
 
@@ -97,7 +97,7 @@ async function main() {
   // Wait for Bilibili to fully render the page
   // Or error could occur after inserting our widget
   while (true) {
-    let text = document.querySelector("#arc_toolbar_report .like")?.innerText || "--";
+    let text = document.querySelector("#arc_toolbar_report .like") ? document.querySelector("#arc_toolbar_report .like").innerText : "--";
     if (text !== "--") break;
     await sleep(500);
   }
