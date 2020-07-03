@@ -3,16 +3,20 @@
 // @name:zh-CN  精确控制视频播放进度 (YouTube)
 // @description A toolbar to set precise video play time and generate clip script
 // @description:zh-CN 精确控制视频播放进度/生成剪辑脚本的工具栏
+// @homepage    https://github.com/suisei-cn/pvp
 // @namespace   moe.suisei.pvp.youtube
-// @match       https://www.youtube.com/watch*
+// @match       https://www.youtube.com/*
+// @match       https://youtube.com/*
 // @grant       none
-// @version     0.5.5
+// @version     0.6.0
 // @author      Outvi V
 // ==/UserScript==
 
 "use strict";
 
-console.log("Precise Video Playback is up");
+let control;
+
+console.log("Precise Video Playback is up. Watching for video players...");
 
 function getVideoId(url) {
   return String(url).match(/v=([^&#]+)/)[1];
@@ -92,26 +96,8 @@ async function sleep(time) {
   });
 }
 
-async function main() {
-  // Player fetching
-  console.log("Waiting for the player...");
-  let anchor;
-  while (true) {
-    anchor = document.querySelector("ytd-video-primary-info-renderer");
-    if (anchor && !anchor.hidden) break;
-    await sleep(500);
-  }
-  let videoElement = document.querySelector("video");
-  if (!videoElement || !anchor) {
-    console.warn("Player not found. Exiting.");
-    return;
-  }
-  console.log("Player detected.");
-
-  // Layout
+function generateFullControl(videoElement) {
   let control = generateControl();
-  console.log(anchor);
-  anchor.parentElement.insertBefore(control.app, anchor);
 
   // States
   let fromValue = 0,
@@ -207,6 +193,25 @@ async function main() {
 -vn \
 output-${videoId}-${fromValue}-${toValue}.mp3`);
   });
+
+  return control;
 }
 
-main();
+function keepControl() {
+  if (!String(window.location).includes("/watch?")) return;
+  if (!control || control.app.offsetHeight === 0) {
+    console.log(
+      "New video playback page found. Trying to insert the widget..."
+    );
+    const video = document.querySelector("video");
+    const anchor = document.querySelector("ytd-video-primary-info-renderer");
+    if (!video || !anchor) return;
+    console.log("Video and anchor found. Releasing the widget...");
+    control = generateFullControl(video);
+    anchor.parentElement.insertBefore(control.app, anchor);
+    console.log("The widget is up.");
+  }
+}
+
+keepControl();
+setInterval(keepControl, 1000);
