@@ -92,15 +92,28 @@ async function sleep(time) {
   });
 }
 
+async function waitfor(cb) {
+  while (true) {
+    if (cb()) return;
+    await sleep(500);
+  }
+}
+
 async function main() {
   console.log("Waiting for the page...");
   // Wait for Bilibili to fully render the page
   // Or error could occur after inserting our widget
-  while (true) {
-    let text = document.querySelector("#arc_toolbar_report .like") ? document.querySelector("#arc_toolbar_report .like").innerText : "--";
-    if (text !== "--") break;
-    await sleep(500);
-  }
+  
+  await waitfor(() => {
+    var _document$querySelect;
+    return ((_document$querySelect = document.querySelector("#member-container")) === null || _document$querySelect === void 0 ? void 0 : _document$querySelect.childNodes.length) > 0 || document.querySelector('#v_upinfo');
+  });
+  console.log("Pre-install hook #1 OK");
+  await waitfor(() => {
+    var _document$querySelect2;
+    return ((_document$querySelect2 = document.querySelector("#arc_toolbar_report .like")) === null || _document$querySelect2 === void 0 ? void 0 : _document$querySelect2.innerText) !== '--';
+  });
+  console.log("Pre-install hook #2 OK")
 
   // Player fetching
   console.log("Waiting for the player...");
