@@ -7,7 +7,7 @@
 // @match       https://bilibili.com/video/*
 // @match       https://www.bilibili.com/video/*
 // @grant       none
-// @version     0.5.6
+// @version     0.5.7
 // @author      Outvi V
 // ==/UserScript==
 
