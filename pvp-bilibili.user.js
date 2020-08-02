@@ -7,7 +7,7 @@
 // @match       https://bilibili.com/video/*
 // @match       https://www.bilibili.com/video/*
 // @grant       none
-// @version     0.5.7
+// @version     0.5.8
 // @author      Outvi V
 // ==/UserScript==
 
@@ -105,27 +105,12 @@ async function main() {
   // Or error could occur after inserting our widget
 
   await waitfor(() => {
-    var _document$querySelect
     return (
-      ((_document$querySelect = document.querySelector('#member-container')) ===
-        null || _document$querySelect === void 0
-        ? void 0
-        : _document$querySelect.childNodes.length) > 0 ||
-      document.querySelector('#v_upinfo')
+      document.querySelector('#v_upinfo .up-face') ||
+      document.querySelector('#member-container .avatar')
     )
   })
-  console.log('Pre-install hook #1 OK')
-  await waitfor(() => {
-    var _document$querySelect2
-    return (
-      ((_document$querySelect2 = document.querySelector(
-        '#arc_toolbar_report .like'
-      )) === null || _document$querySelect2 === void 0
-        ? void 0
-        : _document$querySelect2.innerText) !== '--'
-    )
-  })
-  console.log('Pre-install hook #2 OK')
+  console.log('Pre-install hook OK')
 
   // Player fetching
   console.log('Waiting for the player...')
