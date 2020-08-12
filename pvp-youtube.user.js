@@ -8,7 +8,7 @@
 // @match       https://www.youtube.com/*
 // @match       https://youtube.com/*
 // @grant       none
-// @version     0.6.0
+// @version     0.7.0
 // @author      Outvi V
 // ==/UserScript==
 
@@ -17,6 +17,26 @@
 let control;
 
 console.log("Precise Video Playback is up. Watching for video players...");
+
+function createCutButton(time, videoElement) {
+  let btnJump = document.createElement("button");
+  let btnRemove = document.createElement("button");
+  let btnContainer = document.createElement("div");
+  btnJump.innerText = time;
+  btnRemove.innerText = "x";
+  btnJump.addEventListener("click", () => {
+    videoElement.currentTime = time;
+  });
+  btnRemove.addEventListener("click", () => {
+    btnContainer.style.display = "none";
+  });
+  applyStyle(btnContainer, {
+    marginRight: "0.5vw",
+    flexShrink: "0",
+  });
+  btnContainer.append(btnJump, btnRemove);
+  return btnContainer;
+}
 
 function getVideoId(url) {
   return String(url).match(/v=([^&#]+)/)[1];
@@ -40,6 +60,7 @@ function parseTime(str) {
 
 function generateControl() {
   let app = document.createElement("div");
+  let cutBar = document.createElement("div");
   let inputFrom = document.createElement("input");
   inputFrom.placeholder = "from time";
   let inputTo = document.createElement("input");
@@ -48,6 +69,7 @@ function generateControl() {
   let btn = document.createElement("button");
   let btnStop = document.createElement("button");
   let btnExport = document.createElement("button");
+  let btnCut = document.createElement("button");
   applyStyle(app, {
     display: "flex",
     alignItems: "center",
@@ -56,6 +78,11 @@ function generateControl() {
     marginTop: "15px",
     marginLeft: "auto",
     marginRight: "auto",
+  });
+  applyStyle(cutBar, {
+    display: "flex",
+    flexWrap: "wrap",
+    marginTop: "1.5vh",
   });
   applyStyle(currentTime, {
     fontSize: "1.3rem",
@@ -71,20 +98,24 @@ function generateControl() {
   btn.innerText = "Repeat play";
   btnStop.innerText = "Stop";
   btnExport.innerText = "Export";
+  btnCut.innerText = "Cut";
   app.appendChild(inputFrom);
   app.appendChild(inputTo);
   app.appendChild(currentTime);
   app.appendChild(btn);
   app.appendChild(btnStop);
   app.appendChild(btnExport);
+  app.appendChild(btnCut);
   return {
     app,
+    cutBar,
     inputFrom,
     inputTo,
     currentTime,
     btn,
     btnStop,
     btnExport,
+    btnCut,
   };
 }
 
@@ -141,6 +172,11 @@ function generateFullControl(videoElement) {
     evt.preventDefault();
     videoElement.removeEventListener("timeupdate", onTimeUpdate);
     videoElement.pause();
+  });
+  control.btnCut.addEventListener("click", () => {
+    let nowTime = Number(videoElement.currentTime).toFixed(2);
+    let btn = createCutButton(nowTime, videoElement);
+    control.cutBar.append(btn);
   });
 
   // Start/end time setting
@@ -209,6 +245,7 @@ function keepControl() {
     console.log("Video and anchor found. Releasing the widget...");
     control = generateFullControl(video);
     anchor.parentElement.insertBefore(control.app, anchor);
+    anchor.parentElement.insertBefore(control.cutBar, anchor);
     console.log("The widget is up.");
   }
 }
