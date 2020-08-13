@@ -7,7 +7,7 @@
 // @match       https://bilibili.com/video/*
 // @match       https://www.bilibili.com/video/*
 // @grant       none
-// @version     0.7.2
+// @version     0.7.3
 // @author      Outvi V
 // ==/UserScript==
 
@@ -98,7 +98,7 @@ function generateControl () {
   }
   applyStyle(inputFrom, inputCommonStyle)
   applyStyle(inputTo, inputCommonStyle)
-  btn.innerText = 'Repeat play'
+  btn.innerText = 'Jump'
   btnStop.innerText = 'Stop'
   btnExport.innerText = 'Export'
   btnCut.innerText = 'Cut'
@@ -278,8 +278,10 @@ async function main () {
     if (input === '') {
       toValue = videoElement.duration || 0
       control.inputTo.placeholder = `to ${toValue.toFixed(2)}`
+      control.btn.innerText = 'Jump'
       return
     }
+    control.btn.innerText = 'Repeat'
     const time = parseTime(input)
     if (time === -1) {
       control.btn.disabled = true
