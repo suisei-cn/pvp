@@ -8,7 +8,7 @@
 // @match       https://www.youtube.com/*
 // @match       https://youtube.com/*
 // @grant       none
-// @version     0.7.1
+// @version     0.7.2
 // @author      Outvi V
 // ==/UserScript==
 
@@ -38,7 +38,8 @@ function createCutButton (time, videoElement) {
   })
   applyStyle(btnContainer, {
     marginRight: '0.5vw',
-    flexShrink: '0'
+    flexShrink: '0',
+    marginTop: '3px'
   })
   btnContainer.append(btnJump, btnRemove)
   return btnContainer
@@ -88,7 +89,7 @@ function generateControl () {
   applyStyle(cutBar, {
     display: 'flex',
     flexWrap: 'wrap',
-    marginTop: '1.5vh'
+    marginTop: '1vh'
   })
   applyStyle(currentTime, {
     fontSize: '1.3rem',
@@ -188,6 +189,7 @@ function generateFullControl (videoElement) {
       'This is your current cut list. Change it to import cut from others.',
       JSON.stringify(timings)
     )
+    if (newTimings === null) return
     const parsedNewTimings = (() => {
       try {
         return JSON.parse(newTimings)
