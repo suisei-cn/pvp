@@ -8,7 +8,7 @@
 // @match       https://www.youtube.com/*
 // @match       https://youtube.com/*
 // @grant       none
-// @version     0.7.0
+// @version     0.7.1
 // @author      Outvi V
 // ==/UserScript==
 
@@ -17,6 +17,12 @@
 let control;
 
 console.log("Precise Video Playback is up. Watching for video players...");
+
+function collectCutTiming(cutBar) {
+  return [...cutBar.querySelectorAll("div > button:nth-child(1)")].map((x) =>
+    Number(x.innerText)
+  );
+}
 
 function createCutButton(time, videoElement) {
   let btnJump = document.createElement("button");
@@ -157,6 +163,7 @@ function generateFullControl(videoElement) {
       videoElement.currentTime = Number(fromValue);
     }
   }
+
   control.btn.addEventListener("click", (evt) => {
     evt.preventDefault();
     videoElement.pause();
@@ -168,15 +175,44 @@ function generateFullControl(videoElement) {
       videoElement.removeEventListener("timeupdate", onTimeUpdate);
     }
   });
+
   control.btnStop.addEventListener("click", (evt) => {
     evt.preventDefault();
     videoElement.removeEventListener("timeupdate", onTimeUpdate);
     videoElement.pause();
   });
+
   control.btnCut.addEventListener("click", () => {
     let nowTime = Number(videoElement.currentTime).toFixed(2);
     let btn = createCutButton(nowTime, videoElement);
     control.cutBar.append(btn);
+  });
+
+  control.btnCut.addEventListener("contextmenu", (evt) => {
+    evt.preventDefault();
+    if (!control.cutBar) return;
+    let timings = collectCutTiming(control.cutBar);
+    let newTimings = prompt(
+      "This is your current cut list. Change it to import cut from others.",
+      JSON.stringify(timings)
+    );
+    let parsedNewTimings = (() => {
+      try {
+        return JSON.parse(newTimings);
+      } catch {
+        console.warn("Failed to parse the new cut list.");
+        return [];
+      }
+    })();
+    if (JSON.stringify(timings) === JSON.stringify(parsedNewTimings)) {
+      console.log("No changes on the cut list.");
+      return;
+    }
+    control.cutBar.innerHTML = "";
+    for (const i of parsedNewTimings) {
+      let btn = createCutButton(i, videoElement);
+      control.cutBar.append(btn);
+    }
   });
 
   // Start/end time setting
