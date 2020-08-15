@@ -13,13 +13,13 @@
 
 'use strict'
 
-function collectCutTiming (cutBar) {
+function collectCutTiming(cutBar) {
   return [...cutBar.querySelectorAll('div > button:nth-child(1)')].map((x) =>
     Number(x.innerText)
   )
 }
 
-function createCutButton (time, videoElement) {
+function createCutButton(time, videoElement) {
   const btnJump = document.createElement('button')
   const btnRemove = document.createElement('button')
   const btnContainer = document.createElement('div')
@@ -34,7 +34,7 @@ function createCutButton (time, videoElement) {
   applyStyle(btnContainer, {
     marginRight: '0.5vw',
     flexShrink: '0',
-    marginTop: '3px'
+    marginTop: '3px',
   })
   btnContainer.append(btnJump, btnRemove)
   return btnContainer
@@ -42,11 +42,11 @@ function createCutButton (time, videoElement) {
 
 console.log('Precise Video Playback is up')
 
-function getVideoId (url) {
+function getVideoId(url) {
   return String(url).match(/(a|b)v([^?&#]+)/i)[0]
 }
 
-function applyStyle (elem, styles) {
+function applyStyle(elem, styles) {
   for (const [key, value] of Object.entries(styles)) {
     elem.style[key] = value
   }
@@ -63,7 +63,7 @@ function parseTime(str) {
   return time
 }
 
-function generateControl () {
+function generateControl() {
   const app = document.createElement('div')
   const cutBar = document.createElement('div')
   const inputFrom = document.createElement('input')
@@ -82,20 +82,20 @@ function generateControl () {
     maxWidth: '600px',
     marginTop: '15px',
     marginLeft: 'auto',
-    marginRight: 'auto'
+    marginRight: 'auto',
   })
   applyStyle(cutBar, {
     display: 'flex',
     flexWrap: 'wrap',
-    marginTop: '1vh'
+    marginTop: '1vh',
   })
   applyStyle(currentTime, {
     fontSize: '1.2rem',
     minWidth: '7.5rem',
-    textAlign: 'center'
+    textAlign: 'center',
   })
   const inputCommonStyle = {
-    width: '80px'
+    width: '80px',
   }
   applyStyle(inputFrom, inputCommonStyle)
   applyStyle(inputTo, inputCommonStyle)
@@ -119,11 +119,11 @@ function generateControl () {
     btn,
     btnStop,
     btnExport,
-    btnCut
+    btnCut,
   }
 }
 
-async function sleep (time) {
+async function sleep(time) {
   await new Promise((resolve) => {
     setTimeout(() => {
       resolve()
@@ -131,14 +131,14 @@ async function sleep (time) {
   })
 }
 
-async function waitfor (cb) {
+async function waitfor(cb) {
   while (true) {
     if (cb()) return
     await sleep(500)
   }
 }
 
-async function main () {
+async function main() {
   console.log('Waiting for the page...')
   // Wait for Bilibili to fully render the page
   // Or error could occur after inserting our widget
@@ -189,14 +189,14 @@ async function main () {
   }
 
   // Current playback time
-  function updateCurrentTime () {
+  function updateCurrentTime() {
     control.currentTime.innerText = Number(videoElement.currentTime).toFixed(2)
     requestAnimationFrame(updateCurrentTime)
   }
   requestAnimationFrame(updateCurrentTime)
 
   // Repeat playback
-  function onTimeUpdate () {
+  function onTimeUpdate() {
     if (videoElement.currentTime >= Number(toValue)) {
       videoElement.currentTime = Number(fromValue)
     }
@@ -255,7 +255,7 @@ async function main () {
   })
 
   // Start/end time setting
-  function updateURL () {
+  function updateURL() {
     history.pushState(null, null, `#pvp${fromValue}-${toValue}`)
   }
   control.inputFrom.addEventListener('change', () => {

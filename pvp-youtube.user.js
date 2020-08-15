@@ -18,13 +18,13 @@ let control
 
 console.log('Precise Video Playback is up. Watching for video players...')
 
-function collectCutTiming (cutBar) {
+function collectCutTiming(cutBar) {
   return [...cutBar.querySelectorAll('div > button:nth-child(1)')].map((x) =>
     Number(x.innerText)
   )
 }
 
-function createCutButton (time, videoElement) {
+function createCutButton(time, videoElement) {
   const btnJump = document.createElement('button')
   const btnRemove = document.createElement('button')
   const btnContainer = document.createElement('div')
@@ -39,17 +39,17 @@ function createCutButton (time, videoElement) {
   applyStyle(btnContainer, {
     marginRight: '0.5vw',
     flexShrink: '0',
-    marginTop: '3px'
+    marginTop: '3px',
   })
   btnContainer.append(btnJump, btnRemove)
   return btnContainer
 }
 
-function getVideoId (url) {
+function getVideoId(url) {
   return String(url).match(/v=([^&#]+)/)[1]
 }
 
-function applyStyle (elem, styles) {
+function applyStyle(elem, styles) {
   for (const [key, value] of Object.entries(styles)) {
     elem.style[key] = value
   }
@@ -66,7 +66,7 @@ function parseTime(str) {
   return time
 }
 
-function generateControl () {
+function generateControl() {
   const app = document.createElement('div')
   const cutBar = document.createElement('div')
   const inputFrom = document.createElement('input')
@@ -85,21 +85,21 @@ function generateControl () {
     maxWidth: '700px',
     marginTop: '15px',
     marginLeft: 'auto',
-    marginRight: 'auto'
+    marginRight: 'auto',
   })
   applyStyle(cutBar, {
     display: 'flex',
     flexWrap: 'wrap',
-    marginTop: '1vh'
+    marginTop: '1vh',
   })
   applyStyle(currentTime, {
     fontSize: '1.3rem',
     minWidth: '8.1rem',
     textAlign: 'center',
-    color: 'var(--yt-spec-text-primary)'
+    color: 'var(--yt-spec-text-primary)',
   })
   const inputCommonStyle = {
-    width: '120px'
+    width: '120px',
   }
   applyStyle(inputFrom, inputCommonStyle)
   applyStyle(inputTo, inputCommonStyle)
@@ -123,11 +123,11 @@ function generateControl () {
     btn,
     btnStop,
     btnExport,
-    btnCut
+    btnCut,
   }
 }
 
-function generateFullControl (videoElement) {
+function generateFullControl(videoElement) {
   const control = generateControl()
 
   // States
@@ -145,14 +145,14 @@ function generateFullControl (videoElement) {
   }
 
   // Current playback time
-  function updateCurrentTime () {
+  function updateCurrentTime() {
     control.currentTime.innerText = Number(videoElement.currentTime).toFixed(2)
     requestAnimationFrame(updateCurrentTime)
   }
   requestAnimationFrame(updateCurrentTime)
 
   // Repeat playback
-  function onTimeUpdate () {
+  function onTimeUpdate() {
     if (videoElement.currentTime >= Number(toValue)) {
       videoElement.currentTime = Number(fromValue)
     }
@@ -211,7 +211,7 @@ function generateFullControl (videoElement) {
   })
 
   // Start/end time setting
-  function updateURL () {
+  function updateURL() {
     history.pushState(null, null, `#pvp${fromValue}-${toValue}`)
   }
   control.inputFrom.addEventListener('change', () => {
@@ -266,12 +266,10 @@ output-${videoId}-${fromValue}-${toValue}.mp3`)
   return control
 }
 
-function keepControl () {
+function keepControl() {
   if (!String(window.location).includes('/watch?')) return
   if (!control || control.app.offsetHeight === 0) {
-    console.log(
-      'New video playback page found. Trying to insert the widget...'
-    )
+    console.log('New video playback page found. Trying to insert the widget...')
     const video = document.querySelector('video')
     const anchor = document.querySelector('ytd-video-primary-info-renderer')
     if (!video || !anchor) return
