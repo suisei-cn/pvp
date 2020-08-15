@@ -8,7 +8,7 @@
 // @match       https://www.youtube.com/*
 // @match       https://youtube.com/*
 // @grant       none
-// @version     0.7.3
+// @version     0.7.4
 // @author      Outvi V
 // ==/UserScript==
 
