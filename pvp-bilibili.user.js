@@ -132,7 +132,7 @@ async function sleep(time) {
 }
 
 async function waitfor(cb) {
-  while (true) {
+  for (;;) {
     if (cb()) return
     await sleep(500)
   }
