@@ -70,9 +70,9 @@ function generateControl() {
   const app = document.createElement('div')
   const cutBar = document.createElement('div')
   const inputFrom = document.createElement('input')
-  inputFrom.placeholder = 'from time'
+  inputFrom.placeholder = 'from 0'
   const inputTo = document.createElement('input')
-  inputTo.placeholder = 'to time'
+  inputTo.placeholder = 'to ...'
   const currentTime = document.createElement('span')
   const btn = document.createElement('button')
   const btnStop = document.createElement('button')
@@ -262,6 +262,21 @@ function generateFullControl(videoElement) {
 -vn \
 output-${videoId}-${fromValue}-${toValue}.mp3`)
   })
+
+  function setInitialDuration(dur) {
+    control.inputTo.placeholder = `to ${dur.toFixed(2)}`
+    const input = control.inputTo.value
+    if (input !== '') return
+    toValue = dur
+  }
+
+  if (videoElement.duration) {
+    setInitialDuration(videoElement.duration)
+  } else {
+    videoElement.addEventListener('loadedmetadata', () => {
+      setInitialDuration(videoElement.duration)
+    })
+  }
 
   return control
 }
