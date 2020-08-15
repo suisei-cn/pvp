@@ -55,14 +55,15 @@ function applyStyle (elem, styles) {
   }
 }
 
-function parseTime (str) {
-  if (!isNaN(Number(str))) return Number(str)
-  const time = str.match(/([0-9]?)?:([0-9]+)(\.([0-9]+))?/)
-  if (time === null) return -1
-  const ret =
-    Number(time[1] || 0) * 60 + Number(time[2]) + Number(time[4] || 0) * 0.1
-  if (isNaN(ret)) return -1
-  return ret
+function parseTime(str) {
+  const hms = str.split(':')
+  let time = 0
+  for (const i of hms) {
+    time *= 60
+    time += Number(i)
+    if (isNaN(time)) return -1
+  }
+  return time
 }
 
 function generateControl () {
