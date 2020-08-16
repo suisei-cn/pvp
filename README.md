@@ -14,7 +14,7 @@
 
 ---
 
-Precise video playback on YouTube/Bilibili. We also generate the clip shell script (audio only by default), and you can easily get the clip running this on a machine with `youtube-dl` (for YouTube) or `yk-dl` (for Bilibili) as well as `ffmpeg`.
+Precise video playback on YouTube/Bilibili. We also generate the clip shell script (audio only by default), and you can easily get the clip running this on a machine with `youtube-dl` as well as `ffmpeg`.
 
 ## Feature
 
