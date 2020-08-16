@@ -8,7 +8,7 @@
 // @match       https://www.youtube.com/*
 // @match       https://youtube.com/*
 // @grant       none
-// @version     0.7.4
+// @version     0.7.6
 // @author      Outvi V
 // ==/UserScript==
 
@@ -253,14 +253,10 @@ function generateFullControl(videoElement) {
   control.btnExport.addEventListener('click', (evt) => {
     evt.preventDefault()
     const videoId = getVideoId(window.location)
-    alert(`ffmpeg -i $(youtube-dl -f bestaudio -g "https://www.youtube.com/watch?v=${videoId}") \
--ss ${fromValue} \
--to ${toValue} \
--acodec libmp3lame \
--ab 192k \
--af loudnorm=I=-16:TP=-2:LRA=11 \
--vn \
-output-${videoId}-${fromValue}-${toValue}.mp3`)
+    alert(`youtube-dl -f bestaudio "https://www.youtube.com/watch?v=${videoId}" \\
+-x --audio-format mp3 --audio-quality 192k \\
+--postprocessor-args "-ss ${fromValue} -to ${toValue} -af loudnorm=I=-16:TP=-2:LRA=11" \\
+-o "output-%(id)s-${fromValue}-${toValue}.%(ext)s"`)
   })
 
   function setInitialDuration(dur) {

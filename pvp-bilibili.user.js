@@ -7,7 +7,7 @@
 // @match       https://bilibili.com/video/*
 // @match       https://www.bilibili.com/video/*
 // @grant       none
-// @version     0.7.5
+// @version     0.7.6
 // @author      Outvi V
 // ==/UserScript==
 
@@ -296,14 +296,10 @@ async function main() {
   control.btnExport.addEventListener('click', (evt) => {
     evt.preventDefault()
     const videoId = getVideoId(window.location)
-    alert(`ffmpeg -i $(youtube-dl -f bestaudio -g "https://www.bilibili.com/video/${videoId}") \
-    -ss ${fromValue} \
-    -to ${toValue} \
-    -acodec libmp3lame \
-    -ab 192k \
-    -af loudnorm=I=-16:TP=-2:LRA=11 \
-    -vn \
-    output-${videoId}-${fromValue}-${toValue}.mp3`)
+    alert(`youtube-dl -f 0 "https://www.bilibili.com/video/${videoId}" \\
+-x --audio-format mp3 --audio-quality 192k \\
+--postprocessor-args "-ss ${fromValue} -to ${toValue} -af loudnorm=I=-16:TP=-2:LRA=11" \\
+-o "output-%(id)s-${fromValue}-${toValue}.%(ext)s"`)
   })
 
   function setInitialDuration(dur) {
