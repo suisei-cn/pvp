@@ -9,8 +9,14 @@
 ![Example on Bilibili](example-b.png)
 
 <p align="center">
-  This userscript shows up a toolbar at the bottom of video to give users better control. Video from <a href="https://www.youtube.com/watch?v=ImSW1g02FUk">here</a> and <a href="https://www.bilibili.com/video/av69216443">here</a>. <br>
+  This userscript shows up a toolbar at the bottom of video to give users better control. Video from <a href="https://www.youtube.com/watch?v=ImSW1g02FUk">here</a> and <a href="https://www.bilibili.com/video/av69216443">here</a>*. <br>
 </p>
+
+---
+
+**\* For users of pvp for Bilibili**: Bilibili has rolled out a note-taking feature for logined users. We suggest you use that as an alternative when possible since pvp for bilibili is still unstable due to unpredictable Bilibili native scripts.
+
+![Example on YouTube](example-bilibili-notes.png)
 
 ---
 
