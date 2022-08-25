@@ -8,7 +8,7 @@
 // @match       https://www.youtube.com/*
 // @match       https://youtube.com/*
 // @grant       none
-// @version     0.7.6
+// @version     0.8.0
 // @author      Outvi V
 // ==/UserScript==
 
@@ -282,12 +282,32 @@ function keepControl() {
   if (!control || control.app.offsetHeight === 0) {
     console.log('New video playback page found. Trying to insert the widget...')
     const video = document.querySelector('video')
-    const anchor = document.querySelector('ytd-video-primary-info-renderer')
-    if (!video || !anchor) return
+    const anchorNewYouTubeUI = document.querySelector('#below')
+    const anchorOldYouTubeUI = document.querySelector(
+      'ytd-video-primary-info-renderer'
+    )
+    const anchor =
+      // if the new UI is visible
+      anchorNewYouTubeUI && anchorNewYouTubeUI.offsetParent
+        ? // use the new UI
+          anchorNewYouTubeUI
+        : // or, if the old UI is visible
+        anchorOldYouTubeUI && anchorOldYouTubeUI.offsetParent
+        ? // use the old UI
+          anchorOldYouTubeUI
+        : // Not found, stop
+          null
+    if (!video || !anchor) {
+      console.log('Anchor not found. Retrying...')
+      return
+    }
     console.log('Video and anchor found. Releasing the widget...')
     control = generateFullControl(video)
+
+    // insert the widget
     anchor.parentElement.insertBefore(control.app, anchor)
     anchor.parentElement.insertBefore(control.cutBar, anchor)
+
     console.log('The widget is up.')
   }
 }
